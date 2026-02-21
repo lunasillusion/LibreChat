@@ -1,17 +1,9 @@
-# ... other COPY instructions ...
+# v0.8.3-rc1
 
-# DEBUG: List files in the current build context
-RUN ls -l # This will show what Docker can see before the COPY command
-
-COPY --chown=node:node librechat.yaml /app/librechat.yaml
-
-# ... might be followed by COPY --chown=node:node . . ...
- v0.8.3-rc1
-
-# Base node image
+# Base node image (This is the "node" stage)
 FROM node:20-alpine AS node
 
-# Install jemalloc
+# Install common dependencies needed for LibreChat's build process
 RUN apk add --no-cache jemalloc
 RUN apk add --no-cache python3 py3-pip uv
 
@@ -25,11 +17,13 @@ RUN uv --version
 # Set configurable max-old-space-size with default
 ARG NODE_MAX_OLD_SPACE_SIZE=6144
 
+# Create app directory and set ownership
 RUN mkdir -p /app && chown node:node /app
 WORKDIR /app
 
 USER node
 
+# Copy package.json files to leverage Docker caching for npm install
 COPY --chown=node:node package.json package-lock.json ./
 COPY --chown=node:node api/package.json ./api/package.json
 COPY --chown=node:node client/package.json ./client/package.json
@@ -37,6 +31,16 @@ COPY --chown=node:node packages/data-provider/package.json ./packages/data-provi
 COPY --chown=node:node packages/data-schemas/package.json ./packages/data-schemas/package.json
 COPY --chown=node:node packages/api/package.json ./packages/api/package.json
 
+# --- START: Debug and LibreChat.yaml Insertion ---
+# DEBUG: List files in the current build context (Keep for one more test to verify .dockerignore fix)
+RUN ls -l
+
+# Copy LibreChat configuration file into the app directory
+COPY --chown=node:node librechat.yaml /app/librechat.yaml
+# --- END: Debug and LibreChat.yaml Insertion ---
+
+
+# Run npm install and client build steps
 RUN \
     # Allow mounting of these files, which have no default
     touch .env ; \
@@ -47,6 +51,7 @@ RUN \
     npm config set fetch-retry-mintimeout 15000 ; \
     npm ci --no-audit
 
+# Copy all other application files
 COPY --chown=node:node . .
 
 RUN \
@@ -60,11 +65,9 @@ EXPOSE 3080
 ENV HOST=0.0.0.0
 CMD ["npm", "run", "backend"]
 
-# Optional: for client with nginx routing
+# Optional: for client with nginx routing (keeping this commented out)
 # FROM nginx:stable-alpine AS nginx-client
 # WORKDIR /usr/share/nginx/html
 # COPY --from=node /app/client/dist /usr/share/nginx/html
 # COPY client/nginx.conf /etc/nginx/conf.d/default.conf
-# ENTRYPOINT ["nginx", "-g", "daemon off;"]# ... other COPY instructions ...
-COPY --chown=node:node librechat.yaml /app/librechat.yaml
-# ... might be followed by COPY --chown=node:node . . ...
+# ENTRYPOINT ["nginx", "-g", "daemon off;"]
