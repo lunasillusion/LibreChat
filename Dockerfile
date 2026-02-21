@@ -1,4 +1,12 @@
-# v0.8.3-rc1
+# ... other COPY instructions ...
+
+# DEBUG: List files in the current build context
+RUN ls -l # This will show what Docker can see before the COPY command
+
+COPY --chown=node:node librechat.yaml /app/librechat.yaml
+
+# ... might be followed by COPY --chown=node:node . . ...
+ v0.8.3-rc1
 
 # Base node image
 FROM node:20-alpine AS node
