@@ -57,4 +57,6 @@ CMD ["npm", "run", "backend"]
 # WORKDIR /usr/share/nginx/html
 # COPY --from=node /app/client/dist /usr/share/nginx/html
 # COPY client/nginx.conf /etc/nginx/conf.d/default.conf
-# ENTRYPOINT ["nginx", "-g", "daemon off;"]
+# ENTRYPOINT ["nginx", "-g", "daemon off;"]# ... other COPY instructions ...
+COPY --chown=node:node librechat.yaml /app/librechat.yaml
+# ... might be followed by COPY --chown=node:node . . ...
