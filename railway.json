@@ -4,8 +4,11 @@
     "builder": "DOCKERFILE"
   },
   "deploy": {
+    "startCommand": "npm start",
     "healthcheckPath": "/health",
-    "healthcheckTimeout": 300
+    "healthcheckTimeout": 300,
+    "env": {
+      "LIBRECHAT_CONFIG_PATH": "/app/librechat.yaml"
+    }
   }
 }
-
