@@ -13,17 +13,3 @@ endpoints:
       titleConvo: true
       titleModel: "openai/gpt-4o-mini"
       modelDisplayLabel: "OpenRouter"
-      # ... your existing OpenRouter endpoint config ...
-speech:
-  # This enables the speech features in the UI
-  use: true
-  tts:
-    # This tells LibreChat to use an external TTS provider
-    external: true
-    # Configuration for OpenAI TTS
-    openai:
-      apiKey: "${OPENAI_API_KEY}"
-      model: "tts-1" # You can also try "tts-1-hd"
-      voice: "onyx" # Choose your preferred voice: alloy,echo,fable,onyx,nova,shimmer
-      # You might also need to specify the URL if it's not the default
-      # url: "https://api.openai.com/v1/audio/speech" # Uncomment if needed, but usually defaults
