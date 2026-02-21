@@ -1,4 +1,3 @@
-```yaml
 version: 1.0.9
 
 endpoints:
@@ -14,4 +13,4 @@ endpoints:
       titleConvo: true
       titleModel: "openai/gpt-4o-mini"
       modelDisplayLabel: "OpenRouter"
-```
+
