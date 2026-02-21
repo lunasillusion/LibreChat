@@ -1,10 +1,11 @@
 {
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
-    "builder": "DOCKERFILE"
+    "builder": "DOCKERFILE" // This is a comment
   },
   "deploy": {
-    "startCommand": "npm start", # This will be ignored by DOCKER variable or Dockerfile itself, but keep for robustness
+    // Here are some deployment options
+    "startCommand": "npm start",
     "healthcheckPath": "/health",
     "healthcheckTimeout": 300,
     "env": {
