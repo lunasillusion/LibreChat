@@ -13,3 +13,24 @@ endpoints:
       titleConvo: true
       titleModel: "openai/gpt-4o-mini"
       modelDisplayLabel: "OpenRouter"
+speech:
+  use: true # Enables speech features generally
+  tts:
+    external: true # Tells LibreChat to use an external TTS provider
+    openai:
+      apiKey: "${OPENAI_API_KEY}"
+      # The 'model' here can be a default or specified as an array for choice
+      # We will set a default here, but LibreChat's UI usually offers a selection if configured for it.
+      model: "tts-1" # Default model when not explicitly selected
+      voice: "onyx" # Default voice when not explicitly selected
+      # List all available models and voices that users can select in the UI
+      models:
+        - "tts-1"
+        - "tts-1-hd"
+      voices:
+        - "alloy"
+        - "echo"
+        - "fable"
+        - "onyx"
+        - "nova"
+        - "shimmer"
