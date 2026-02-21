@@ -4,7 +4,7 @@
     "builder": "DOCKERFILE"
   },
   "deploy": {
-    "startCommand": "npm start",
+    "startCommand": "npm start", # This will be ignored by DOCKER variable or Dockerfile itself, but keep for robustness
     "healthcheckPath": "/health",
     "healthcheckTimeout": 300,
     "env": {
